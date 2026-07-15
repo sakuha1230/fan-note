@@ -1,6 +1,13 @@
 /* ================== 全域狀態與資料層 ================== */
 const STORAGE_KEY = 'fandom_notebook_v2';
-const TODAY = '2026-07-15';
+function getTodayStr() {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+const TODAY = getTodayStr();
 
 const COLOR_PRESETS = ['#7A2E2A','#5C6B4F','#A9791F','#4A5568','#8B5A8C','#2F6690','#B0563E','#3E6152'];
 
@@ -97,7 +104,7 @@ let state = {
 
 function loadState() {
   try {
-    const saved = sessionStorage.getItem(STORAGE_KEY);
+    const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
       state = Object.assign({}, state, parsed);
@@ -105,10 +112,32 @@ function loadState() {
   } catch(e) {}
 }
 function saveState() {
-  try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
 }
 function uid() { return 'id' + Math.random().toString(36).slice(2, 9); }
 function esc(s) { const d = document.createElement('div'); d.textContent = (s===undefined||s===null)?'':String(s); return d.innerHTML; }
+
+/* 給已登入、雲端還沒有任何資料的使用者一份乾淨的空白帳本（不含示範資料） */
+function createBlankState() {
+  const firstIdolId = uid();
+  return {
+    settings: { fabAvatarSize: 56, fabTheme: 'default' },
+    idols: [
+      { id: firstIdolId, name: '我的偶像', color: COLOR_PRESETS[0], avatarUrl: '', coverUrl: '', debutDate: '', groupName: '', position: '', fields: [] }
+    ],
+    activeIdol: firstIdolId,
+    currentView: 'home',
+    logs: [],
+    meetings: [],
+    achievements: [],
+    emotions: [],
+    schedule: [],
+    resources: [],
+    supportNotes: [],
+    songSupports: [],
+    todos: []
+  };
+}
 
 function activeIdolData() { return state.idols.find(i => i.id === state.activeIdol); }
 function idolById(id) { return state.idols.find(i => i.id === id); }

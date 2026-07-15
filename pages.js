@@ -4,6 +4,7 @@ function renderHomePage() {
   return `
     <div class="topbar">
       <div class="brand"><i class="ti ti-notebook" aria-hidden="true"></i>追星手帳</div>
+      ${accountStatusHtml()}
     </div>
     ${homeQuickLogCard()}
     ${homeThrowbackCard()}
@@ -12,6 +13,30 @@ function renderHomePage() {
       ${homeResourceMiniCard()}
       ${homeTodoCard()}
     </div>
+  `;
+}
+
+function accountStatusHtml() {
+  if (typeof currentUser === 'undefined') {
+    // firebase-init.js 尚未載入成功時的保險寫法
+    return '';
+  }
+  if (currentUser) {
+    const photo = currentUser.photoURL;
+    return `
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span style="font-size:12.5px;color:var(--ink-soft);display:flex;align-items:center;gap:6px;">
+          ${photo ? `<img src="${photo}" style="width:22px;height:22px;border-radius:50%;">` : `<i class="ti ti-user-circle" aria-hidden="true"></i>`}
+          ${esc(currentUser.displayName || currentUser.email || '已登入')}
+        </span>
+        <button class="btn ghost small" id="btn-sign-out"><i class="ti ti-logout" aria-hidden="true"></i>登出</button>
+      </div>
+    `;
+  }
+  return `
+    <button class="btn ghost small" id="btn-google">
+      <i class="ti ti-brand-google" aria-hidden="true"></i>使用 Google 帳號同步
+    </button>
   `;
 }
 

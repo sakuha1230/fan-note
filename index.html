@@ -240,9 +240,16 @@ input[type=color]{width:44px;height:32px;padding:2px;border-radius:8px;border:1p
 <body>
 <div class="app" id="app"></div>
 <div class="fab-wrap" id="fab-wrap"></div>
+
+<!-- Firebase SDK（compat 版本，適合純 script 標籤環境，不需要打包工具） -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+
 <script src="state.js"></script>
 <script src="components.js"></script>
 <script src="pages.js"></script>
+<script src="firebase-init.js"></script>
 <script src="main.js"></script>
 </body>
 </html>

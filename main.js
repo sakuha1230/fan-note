@@ -15,6 +15,12 @@ function bindEvents() {
   if (crumbHome) crumbHome.onclick = () => { state.currentView='home'; saveState(); renderApp(); };
 
   /* ================== 主頁事件 ================== */
+  /* ---- 帳號同步 ---- */
+  const googleBtn = document.getElementById('btn-google');
+  if (googleBtn) googleBtn.onclick = () => { if (typeof signInWithGoogle === 'function') signInWithGoogle(); };
+  const signOutBtn = document.getElementById('btn-sign-out');
+  if (signOutBtn) signOutBtn.onclick = () => { if (typeof signOutUser === 'function') signOutUser(); };
+
   document.querySelectorAll('[data-quicklog-idol]').forEach(el => {
     el.onclick = () => { homeQuickLogIdol = el.dataset.quicklogIdol; renderApp(); };
   });
